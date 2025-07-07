@@ -1,0 +1,25 @@
+.screen-reader-ui {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 9999;
+}
+
+.screen-reader-btn {
+  background: #4CAF50;
+  color: white;
+  border: none;
+  padding: 10px;
+  margin: 5px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.screen-reader-btn:hover {
+  background: #45a049;
+}
+
+.highlight-text {
+  background: yellow;
+  transition: background 0.3s;
+}
