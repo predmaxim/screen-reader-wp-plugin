@@ -14,6 +14,25 @@
     <h2>Основной контент</h2>
     <p>Это пример текста, который будет озвучен плагином. Наведите курсор на любой текст, чтобы услышать его чтение.</p>
 
+    <nav>
+      <ul>
+        <li><a href="#section1">Раздел 1</a></li>
+        <li><a href="#section2">Раздел 2</a></li>
+        <li><a href="#section3">Раздел 3</a></li>
+      </ul>
+    </nav>
+   
+    <button id="toggle-nav" class="screen-reader-btn">Показать навигацию</button>
+    <div id="nav-container" style="display: none;">
+      <nav>
+        <ul>
+          <li><a href="#section1">Раздел 1</a></li>
+          <li><a href="#section2">Раздел 2</a></li>
+          <li><a href="#section3">Раздел 3</a></li>
+        </ul>
+      </nav>
+    </div>
+
     <h3>Раздел 1</h3>
     <p>Плагин предназначен для чтения текста на странице с помощью экранного диктора. Он поддерживает русский язык и
       имеет удобные элементы управления.</p>
@@ -46,6 +65,7 @@
   </footer>
 
   <script src="screen-reader.bundle.js"></script>
+  <script src="test-js.js"></script>
 </body>
 
 </html>
