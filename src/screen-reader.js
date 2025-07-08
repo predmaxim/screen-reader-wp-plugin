@@ -9,9 +9,11 @@ document.addEventListener('DOMContentLoaded', function () {
   let utterance = null;
   let currentHighlight = null;
   let wasReadingMode = false;
-  const excludedSelectors = 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"]';
+  const excludedSelectorsBase = 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"]';
+  const excludedSelectorsWithButtons = excludedSelectorsBase + ', #screen-reader-controls, #screen-reader-toggle-on, #screen-reader-toggle-off, #screen-reader-play, #screen-reader-pause, #screen-reader-stop';
 
-  const toggleBtn = document.getElementById('screen-reader-toggle');
+  const toggleOnBtn = document.getElementById('screen-reader-toggle-on');
+  const toggleOffBtn = document.getElementById('screen-reader-toggle-off');
   const controlsDiv = document.getElementById('screen-reader-controls');
   const playBtn = document.getElementById('screen-reader-play');
   const pauseBtn = document.getElementById('screen-reader-pause');
@@ -19,13 +21,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
   controlsDiv.style.display = 'flex';
 
-  toggleBtn.addEventListener('click', function () {
-    isReadingMode = !isReadingMode;
-    toggleBtn.textContent = isReadingMode ? '🔇 Выключить чтение' : '🔊 Включить чтение';
-    if (!isReadingMode) {
-      stopReading();
-      removeHighlight();
+  function updateToggleButtons() {
+    if (isReadingMode) {
+      toggleOnBtn.style.display = 'none';
+      toggleOffBtn.style.display = '';
+    } else {
+      toggleOnBtn.style.display = '';
+      toggleOffBtn.style.display = 'none';
     }
+  }
+  updateToggleButtons();
+
+  toggleOnBtn.addEventListener('click', function () {
+    isReadingMode = true;
+    updateToggleButtons();
+  });
+  toggleOffBtn.addEventListener('click', function () {
+    isReadingMode = false;
+    updateToggleButtons();
+    stopReading();
+    removeHighlight();
   });
 
   playBtn.addEventListener('click', function () {
@@ -35,15 +50,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     wasReadingMode = isReadingMode;
     isReadingMode = false;
-    toggleBtn.textContent = '🔊 Включить чтение';
+    updateToggleButtons();
     removeHighlight();
     const mainContent = document.body.cloneNode(true);
-    mainContent.querySelectorAll(excludedSelectors).forEach(el => el.remove());
+    mainContent.querySelectorAll(excludedSelectorsWithButtons).forEach(el => el.remove());
     const text = mainContent.innerText.trim().replace(/\s+/g, ' ');
     speakText(text, function () {
       if (wasReadingMode) {
         isReadingMode = true;
-        toggleBtn.textContent = '🔇 Выключить чтение';
+        updateToggleButtons();
       }
     });
   });
@@ -59,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.addEventListener('mouseover', function (e) {
     if (!isReadingMode) return;
     const target = e.target.closest('p, h1, h2, h3, h4, h5, h6, div, span, li, a, button');
-    if (!target || target.matches(excludedSelectors) || !target.innerText.trim()) return;
+    if (!target || target.matches(excludedSelectorsBase) || !target.innerText.trim()) return;
     removeHighlight();
     target.classList.add('highlight-text');
     currentHighlight = target;
