@@ -1,57 +1,61 @@
-# Screen Reader WordPress Plugin
+# README
 
-Плагин для WordPress, который добавляет функциональность экранного диктора на сайт.
+[Русская версия](README.ru.md)
 
-## Возможности
+This plugin adds screen reader functionality to your WordPress site.
 
-- Чтение текста при наведении курсора (режим "Читать под курсором")
-- Управление воспроизведением: все кнопки (Включить/Выключить чтение под курсором, Читать всю страницу, Пауза, Стоп) всегда видимы в один ряд
-- Чтение всей страницы (режим под курсором временно отключается, затем возвращается)
-- Пауза и продолжение чтения с того же места
-- Остановка чтения при переходе к новому элементу или при нажатии Стоп
-- Автоматическая остановка воспроизведения при перезагрузке страницы
-- Поддержка русского языка
-- Исключение ненужных элементов (навигация, меню, футеры)
+## Features
 
-## Разработка и тестирование
+- Read text on mouse hover ("Read on hover" mode)
+- Playback controls: all buttons (Enable/Disable hover reading, Read entire page, Pause, Stop) are always visible in a single row
+- Read the entire page (temporarily disables hover reading, then restores it)
+- Pause and resume reading from the same place
+- Stops reading when switching to a new element or pressing Stop
+- Automatically stops playback on page reload
+- Russian language support
+- Excludes unnecessary elements (navigation, menus, footers)
 
-### Установка зависимостей
+## Development & Testing
+
+### Install dependencies
 
 ```bash
 npm install
 ```
 
-### Запуск dev-сервера
+### Start dev server
 
 ```bash
-npm dev      # Запускает webpack-dev-server на порту 9000
+npm start      # Launches webpack-dev-server on port 9000
 ```
 
-### Сборка для продакшна
+### Production build
 
 ```bash
 npm run build
 ```
 
-### Тестирование
+### Testing
 
-1. Соберите проект: `npm run dev`
-2. Откройте в браузере `http://localhost:9000`
-3. Все кнопки управления видимы в нижней части страницы
-4. "🔊 Включить чтение" — включает/выключает режим чтения под курсором
-5. "▶️ Читать всю страницу" — озвучивает весь текст, временно отключая режим под курсором
-6. "⏸ Пауза" — ставит чтение на паузу, повторное нажатие "Читать всю страницу" продолжит с того же места
-7. "⏹ Стоп" — полностью останавливает чтение
-8. При перезагрузке страницы воспроизведение всегда останавливается
+1. Build the project: `npm run dev`
+2. Open `http://localhost:9000` in your browser
+3. All control buttons are visible at the top of the page
+4. "🔊 Enable reading" — toggles hover reading mode
+5. "▶️ Read entire page" — reads all text, temporarily disabling hover mode
+6. "⏸ Pause" — pauses reading, pressing "Read entire page" again resumes from the same place
+7. "⏹ Stop" — completely stops reading
+8. Playback always stops on page reload
 
-## Файлы проекта
+## Project files
 
-- `src/screen-reader.js` — Основная логика плагина
-- `src/screen-reader.css` — Стили для плагина
-- `src/screen-reader.php` — PHP файл для WordPress
-- `test_page/index.html` — Тестовая страница для запуска в режиме разработки
-- `webpack.config.js` — Конфигурация сборки
+- `src/screen-reader.js` — Main plugin logic
+- `src/screen-reader.css` — Plugin styles
+- `src/screen-reader.php` — WordPress PHP integration
+- `test_page/index.html` — Test page
+- `webpack.config.js` — Build configuration
 
-## Структура после сборки
+## Build output structure
 
-После сборки в папке `test_page/` появится файл `screen-reader.bundle.js`, который включает весь JavaScript и CSS код.
+After building, the `test_page/` folder will contain `screen-reader.bundle.js` with all JavaScript and CSS code included.
+
+---
