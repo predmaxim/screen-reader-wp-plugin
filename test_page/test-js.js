@@ -1,4 +1,3 @@
-//  сделай навигацию под кнопкой, чтобы она появлялась только при нажатии на кнопку
 const toggleNavButton = document.getElementById('toggle-nav');
 const navContainer = document.getElementById('nav-container');
 

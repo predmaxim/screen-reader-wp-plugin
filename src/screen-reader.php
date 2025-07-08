@@ -1,12 +1,11 @@
 <?php
 /*
 Plugin Name: Screen Reader
-Description: Плагин для чтения текста с кнопками и режимом наведения.
+Description: A plugin for reading text with control buttons and hover mode.
 Version: 1.0
-Author: Максим Предыбайло
+Author: Maxim Predybaylo
 */
 
-// Подключаем JS и CSS
 function screen_reader_assets() {
     wp_enqueue_style(
         'screen-reader-css',
@@ -22,7 +21,6 @@ function screen_reader_assets() {
 }
 add_action('wp_enqueue_scripts', 'screen_reader_assets');
 
-// Добавляем кнопку в подвал сайта
 function screen_reader_add_ui() {
     echo '
     <div class="screen-reader-ui">
