@@ -1,21 +1,32 @@
+// Импортируем стили
+import './screen-reader.css';
+
 document.addEventListener('DOMContentLoaded', function () {
+  // Останавливаем любое воспроизведение при загрузке страницы
+  if (window.speechSynthesis) {
+    window.speechSynthesis.cancel();
+  }
+
   let isReadingMode = false;
   let utterance = null;
   let currentHighlight = null;
+  let wasReadingMode = false;
   const excludedSelectors = 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"]';
 
   // Элементы UI
-  const toggleBtn = document.getElementById('text-reader-toggle');
-  const controlsDiv = document.getElementById('text-reader-controls');
-  const playBtn = document.getElementById('text-reader-play');
-  const pauseBtn = document.getElementById('text-reader-pause');
-  const stopBtn = document.getElementById('text-reader-stop');
+  const toggleBtn = document.getElementById('screen-reader-toggle');
+  const controlsDiv = document.getElementById('screen-reader-controls');
+  const playBtn = document.getElementById('screen-reader-play');
+  const pauseBtn = document.getElementById('screen-reader-pause');
+  const stopBtn = document.getElementById('screen-reader-stop');
+
+  // Всегда показываем панель управления
+  controlsDiv.style.display = 'flex';
 
   // Включение/выключение режима чтения
   toggleBtn.addEventListener('click', function () {
     isReadingMode = !isReadingMode;
     toggleBtn.textContent = isReadingMode ? '🔇 Выключить чтение' : '🔊 Включить чтение';
-    controlsDiv.style.display = isReadingMode ? 'block' : 'none';
 
     if (!isReadingMode) {
       stopReading();
@@ -25,10 +36,27 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Чтение всей страницы (исключая ненужные элементы)
   playBtn.addEventListener('click', function () {
+    // Если речь на паузе — просто возобновляем
+    if (window.speechSynthesis && window.speechSynthesis.paused) {
+      window.speechSynthesis.resume();
+      return;
+    }
+    // Запоминаем, был ли включён режим чтения под курсором
+    wasReadingMode = isReadingMode;
+    isReadingMode = false;
+    toggleBtn.textContent = '🔊 Включить чтение';
+    removeHighlight();
+
     const mainContent = document.body.cloneNode(true);
     mainContent.querySelectorAll(excludedSelectors).forEach(el => el.remove());
     const text = mainContent.innerText.trim().replace(/\s+/g, ' ');
-    speakText(text);
+    speakText(text, function () {
+      // После окончания чтения возвращаем режим, если пользователь не выключил его вручную
+      if (wasReadingMode) {
+        isReadingMode = true;
+        toggleBtn.textContent = '🔇 Выключить чтение';
+      }
+    });
   });
 
   pauseBtn.addEventListener('click', function () {
@@ -60,19 +88,24 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Убираем подсветку при уходе курсора
   document.addEventListener('mouseout', function (e) {
-    if (currentHighlight && !e.relatedTarget || !currentHighlight.contains(e.relatedTarget)) {
+    if (currentHighlight && (!e.relatedTarget || !currentHighlight.contains(e.relatedTarget))) {
       removeHighlight();
     }
   });
 
   // Функции для речи и подсветки
-  function speakText(text) {
+  function speakText(text, onEndCallback) {
     if (!window.speechSynthesis) {
       alert('Ваш браузер не поддерживает синтез речи!');
       return;
     }
     utterance = new SpeechSynthesisUtterance(text);
     utterance.lang = 'ru-RU';
+    if (typeof onEndCallback === 'function') {
+      utterance.onend = onEndCallback;
+    } else {
+      utterance.onend = null;
+    }
     window.speechSynthesis.speak(utterance);
   }
 
