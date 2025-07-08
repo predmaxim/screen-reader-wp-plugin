@@ -5,7 +5,6 @@ module.exports = {
   output: {
     filename: 'screen-reader.bundle.js',
     path: path.resolve(__dirname, 'test_page'),
-    clean: false
   },
   module: {
     rules: [
@@ -17,14 +16,11 @@ module.exports = {
   },
   mode: 'development',
   devtool: 'source-map',
-  watch: false,
   devServer: {
     static: {
       directory: path.join(__dirname, 'test_page'),
     },
-    compress: true,
     port: 9000,
     open: true,
-    hot: true,
   },
 };
