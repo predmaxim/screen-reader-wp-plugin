@@ -21,7 +21,8 @@
 
 .highlight-text {
   background: yellow;
-  transition: background 0.3s;
+  color: #000;
+  transition: background 0.2s;
 }
 
 #screen-reader-controls {
@@ -34,7 +35,7 @@
 
 #screen-reader-controls button {
   min-width: 40px;
-  padding: 6px 12px;
+  padding: 10px 12px;
   font-size: 16px;
   cursor: pointer;
 }
