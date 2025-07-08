@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "screen-reader.js",
   "scripts": {
-    "dev": "webpack --watch --mode development",
+    "dev": "webpack serve --mode development",
     "build": "webpack --mode production"
   },
   "keywords": [],
@@ -11,6 +11,10 @@
   "license": "ISC",
   "description": "",
   "devDependencies": {
-    "webpack": "^5.99.9"
+    "css-loader": "^6.8.1",
+    "style-loader": "^3.3.3",
+    "webpack": "^5.99.9",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^4.15.1"
   }
 }
