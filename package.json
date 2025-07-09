@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "main": "screen-reader.js",
   "scripts": {
-    "dev": "webpack serve --mode development",
-    "build:prepare": "mkdir screen-reader-wp && npx webpack --mode production && cp -r src/* screen-reader-wp/",
-    "build": "npm run build:prepare && bestzip screen-reader-wp.zip screen-reader-wp/* && rm -rf screen-reader-wp"
+    "dev": "NODE_ENV=development webpack serve --mode development",
+    "dev:clean": "npm run dev && rm -rf build",
+    "build:prepare": "mkdir -p screen-reader-wp && cp build/* src/screen-reader.php src/readme.txt screen-reader-wp/",
+    "build": "npm run build:prepare && NODE_ENV=production webpack --mode production && bestzip screen-reader-wp.zip screen-reader-wp/* && rm -rf screen-reader-wp"
   },
   "keywords": [],
   "author": "Maxim Predybaylo",
