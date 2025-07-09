@@ -4,7 +4,7 @@
   "main": "screen-reader.js",
   "scripts": {
     "dev": "webpack serve --mode development",
-    "build:prepare": "mkdir screen-reader-wp && cp -r src/* screen-reader-wp/",
+    "build:prepare": "mkdir screen-reader-wp && npx webpack --mode production && cp -r src/* screen-reader-wp/",
     "build": "npm run build:prepare && bestzip screen-reader-wp.zip screen-reader-wp/* && rm -rf screen-reader-wp"
   },
   "keywords": [],
