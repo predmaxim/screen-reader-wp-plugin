@@ -25,12 +25,46 @@
   transition: background 0.2s;
 }
 
+.screen-reader-main-toggle {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 99999;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 2rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.screen-reader-main-toggle:hover {
+  background: #444;
+}
+
+.screen-reader-fixed {
+  position: fixed !important;
+  bottom: 90px;
+  right: 24px;
+  z-index: 99998;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  padding: 12px 16px;
+  gap: 10px;
+}
+
 #screen-reader-controls {
   display: flex;
   flex-direction: row;
   gap: 10px;
   align-items: center;
   margin: 10px 0;
+  transition: opacity 0.2s;
 }
 
 #screen-reader-controls button {
