@@ -15,35 +15,30 @@ export function setReaderEnabled(enabled) {
 }
 
 export function initReader() {
-  const { toggleOnBtn, toggleOffBtn, controlsDiv, playBtn, pauseBtn, stopBtn } = getControlElements();
+  const { toggleOnBtn, controlsDiv, playBtn, pauseBtn, stopBtn } = getControlElements();
   controlsDiv.style.display = 'none';
   updateToggleButtons(false);
   updatePlayPauseStopButtons(false);
 
   toggleOnBtn.addEventListener('click', function () {
-    if (!STATE.READER_ENABLED) return;
-    STATE.IS_READING_MODE = true;
+    STATE.IS_READING_MODE = !STATE.IS_READING_MODE;
     updateToggleButtons(STATE.IS_READING_MODE);
-    // При включении режима по наведению сбрасываем режим чтения всей страницы
-    stopReading();
-    updatePlayPauseStopButtons(false);
-    playBtn.textContent = '▶ Read Entire Page';
-    playBtn.onclick = null;
-  });
-  toggleOffBtn.addEventListener('click', function () {
-    if (!STATE.READER_ENABLED) return;
-    STATE.IS_READING_MODE = false;
-    updateToggleButtons(STATE.IS_READING_MODE);
-    stopReading();
-    removeHighlight();
-    updatePlayPauseStopButtons(false);
-    playBtn.textContent = '▶ Read Entire Page';
-    playBtn.onclick = null;
+    if (STATE.IS_READING_MODE) {
+      stopReading();
+      updatePlayPauseStopButtons(false);
+      playBtn.textContent = CONFIG.BUTTON_LABELS.PLAY;
+      playBtn.onclick = null;
+    } else {
+      stopReading();
+      removeHighlight();
+      updatePlayPauseStopButtons(false);
+      playBtn.textContent = CONFIG.BUTTON_LABELS.PLAY;
+      playBtn.onclick = null;
+    }
   });
 
   playBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
-    // При запуске чтения всей страницы сбрасываем режим по наведению
     STATE.IS_READING_MODE = false;
     updateToggleButtons(STATE.IS_READING_MODE);
     stopReading();
@@ -62,7 +57,7 @@ export function initReader() {
     const text = mainContent.innerText.trim().replace(/\s+/g, ' ');
     speakText(text, function () {
       updatePlayPauseStopButtons(false);
-      playBtn.textContent = '▶ Read Entire Page';
+      playBtn.textContent = CONFIG.BUTTON_LABELS.PLAY;
       playBtn.onclick = null;
     });
   });
@@ -70,16 +65,16 @@ export function initReader() {
   pauseBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
     pauseReading();
-    playBtn.textContent = '▶ Resume Reading';
-    playBtn.style.display = '';
-    pauseBtn.style.display = 'none';
-    stopBtn.style.display = '';
+    playBtn.textContent = CONFIG.BUTTON_LABELS.RESUME;
+    playBtn.removeAttribute('hidden');
+    pauseBtn.setAttribute('hidden', '');
+    stopBtn.removeAttribute('hidden');
     playBtn.onclick = null;
     playBtn.onclick = function () {
       if (!STATE.READER_ENABLED) return;
       resumeReading();
       updatePlayPauseStopButtons(true);
-      playBtn.textContent = '▶ Read Entire Page';
+      playBtn.textContent = CONFIG.BUTTON_LABELS.PLAY;
       playBtn.onclick = null;
     };
   });
@@ -88,7 +83,7 @@ export function initReader() {
     if (!STATE.READER_ENABLED) return;
     stopReading();
     updatePlayPauseStopButtons(false);
-    playBtn.textContent = '▶ Read Entire Page';
+    playBtn.textContent = CONFIG.BUTTON_LABELS.PLAY;
     playBtn.onclick = null;
   });
 
@@ -97,6 +92,8 @@ export function initReader() {
     const target = e.target.closest(CONFIG.SELECTORS_TO_READ);
     if (!target || target.matches(CONFIG.EXCLUDED_SELECTORS_BASE) || !target.innerText.trim()) return;
     highlightElement(target);
+    // Добавляем красивую подсветку
+    target.classList.add('screen-reader-highlight');
     stopReading();
     if (window.speechSynthesis && window.speechSynthesis.speaking) return;
     speakText(target.innerText.trim());
@@ -104,5 +101,7 @@ export function initReader() {
 
   document.addEventListener('mouseout', function (e) {
     removeHighlight();
+    // Убираем подсветку
+    if (e.target) e.target.classList.remove('screen-reader-highlight');
   });
 }

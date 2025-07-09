@@ -4,12 +4,12 @@ export function createControlsIfNeeded() {
   if (!document.getElementById('screen-reader-controls')) {
     const controlsDiv = document.createElement('div');
     controlsDiv.id = 'screen-reader-controls';
+    controlsDiv.className = 'screen-reader-controls';
     controlsDiv.innerHTML = `
-      <button id="screen-reader-toggle-on" class="screen-reader-btn">🔊 Enable Hover Reading</button>
-      <button id="screen-reader-toggle-off" class="screen-reader-btn">🔇 Disable Hover Reading</button>
-      <button id="screen-reader-play" class="screen-reader-btn">▶ Read Entire Page</button>
-      <button id="screen-reader-pause" class="screen-reader-btn">⏸ Pause</button>
-      <button id="screen-reader-stop" class="screen-reader-btn">⏹ Stop</button>
+      <button id="screen-reader-toggle-on" class="screen-reader-btn">${CONFIG.BUTTON_LABELS.TOGGLE_ON}</button>
+      <button id="screen-reader-play" class="screen-reader-btn">${CONFIG.BUTTON_LABELS.PLAY}</button>
+      <button id="screen-reader-pause" class="screen-reader-btn">${CONFIG.BUTTON_LABELS.PAUSE}</button>
+      <button id="screen-reader-stop" class="screen-reader-btn">${CONFIG.BUTTON_LABELS.STOP}</button>
     `;
     document.body.insertBefore(controlsDiv, document.body.firstChild);
   }
@@ -18,7 +18,6 @@ export function createControlsIfNeeded() {
 export function getControlElements() {
   return {
     toggleOnBtn: document.getElementById('screen-reader-toggle-on'),
-    toggleOffBtn: document.getElementById('screen-reader-toggle-off'),
     controlsDiv: document.getElementById('screen-reader-controls'),
     playBtn: document.getElementById('screen-reader-play'),
     pauseBtn: document.getElementById('screen-reader-pause'),
@@ -27,13 +26,13 @@ export function getControlElements() {
 }
 
 export function updateToggleButtons(isReadingMode) {
-  const { toggleOnBtn, toggleOffBtn } = getControlElements();
+  const { toggleOnBtn } = getControlElements();
   if (isReadingMode) {
-    toggleOnBtn.style.display = 'none';
-    toggleOffBtn.style.display = '';
+    toggleOnBtn.textContent = CONFIG.BUTTON_LABELS.TOGGLE_ON_ACTIVE || '🟢 Hover Reading';
+    toggleOnBtn.classList.add('screen-reader-btn-active');
   } else {
-    toggleOnBtn.style.display = '';
-    toggleOffBtn.style.display = 'none';
+    toggleOnBtn.textContent = CONFIG.BUTTON_LABELS.TOGGLE_ON;
+    toggleOnBtn.classList.remove('screen-reader-btn-active');
   }
 }
 
@@ -68,11 +67,13 @@ export function setControlsVisible(visible) {
   const controlsDiv = document.getElementById('screen-reader-controls');
   if (controlsDiv) {
     controlsDiv.style.display = visible ? 'flex' : 'none';
+    controlsDiv.classList.remove('screen-reader-controls-fixed', 'screen-reader-controls-static', 'screen-reader-controls-absolute');
     if (CONFIG.ENABLED_FIXED) {
-      controlsDiv.classList.add('screen-reader-controls-absolute');
+      controlsDiv.classList.add('screen-reader-controls-fixed');
     } else {
-      controlsDiv.classList.remove('screen-reader-controls-absolute');
+      controlsDiv.classList.add('screen-reader-controls-static');
     }
+    // Если нужен абсолютный режим, добавьте сюда условие
   }
 }
 
@@ -81,12 +82,12 @@ export function updatePlayPauseStopButtons(isPlaying) {
   const pauseBtn = document.getElementById('screen-reader-pause');
   const stopBtn = document.getElementById('screen-reader-stop');
   if (isPlaying) {
-    playBtn.style.display = 'none';
-    pauseBtn.style.display = '';
-    stopBtn.style.display = '';
+    playBtn.setAttribute('hidden', '');
+    pauseBtn.removeAttribute('hidden');
+    stopBtn.removeAttribute('hidden');
   } else {
-    playBtn.style.display = '';
-    pauseBtn.style.display = 'none';
-    stopBtn.style.display = 'none';
+    playBtn.removeAttribute('hidden');
+    pauseBtn.setAttribute('hidden', '');
+    stopBtn.setAttribute('hidden', '');
   }
 }

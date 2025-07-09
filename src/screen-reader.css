@@ -1,54 +1,34 @@
-.screen-reader-ui {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 9999;
-}
-
-.screen-reader-btn {
-  background: #4CAF50;
-  color: white;
-  border: none;
-  padding: 10px;
-  margin: 5px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.screen-reader-btn:hover {
-  background: #45a049;
-}
-
-.highlight-text {
-  background: yellow;
-  color: #000;
-  transition: background 0.2s;
-}
-
 .screen-reader-main-toggle {
   position: fixed;
   bottom: 24px;
   right: 24px;
   z-index: 99999;
-  background: #222;
+  background: linear-gradient(135deg, #4f8cff 0%, #6ee7b7 100%);
   color: #fff;
   border: none;
   border-radius: 50%;
-  width: 56px;
-  height: 56px;
-  font-size: 2rem;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  width: 64px;
+  height: 64px;
+  font-size: 2.2rem;
+  box-shadow: 0 4px 24px rgba(79, 140, 255, 0.18), 0 1.5px 6px rgba(0, 0, 0, 0.08);
   cursor: pointer;
-  transition: background 0.2s;
+  transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  outline: none;
 }
 
-.screen-reader-main-toggle:hover {
-  background: #444;
+.screen-reader-main-toggle:hover,
+.screen-reader-main-toggle:focus {
+  background: linear-gradient(135deg, #2563eb 0%, #22d3ee 100%);
+  box-shadow: 0 6px 32px rgba(79, 140, 255, 0.28), 0 2px 8px rgba(0, 0, 0, 0.12);
+  transform: scale(1.07);
 }
 
 .screen-reader-main-toggle-static {
   position: static !important;
-  margin: 24px auto 0 auto;
+  margin: 32px auto 0 auto;
   display: block;
   bottom: auto;
   right: auto;
@@ -56,44 +36,11 @@
   z-index: 99999;
 }
 
-.screen-reader-fixed {
-  position: fixed !important;
-  bottom: 90px;
-  right: 24px;
-  z-index: 99998;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-  padding: 12px 16px;
-  gap: 10px;
-}
-
-#screen-reader-controls {
-  display: none;
-  flex-direction: row;
-  gap: 10px;
-  align-items: center;
-  margin: 10px 0;
-  transition: opacity 0.2s;
-}
-
-#screen-reader-controls button {
-  min-width: 40px;
-  padding: 10px 12px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.screen-reader-controls-absolute {
-  position: absolute;
-  bottom: 90px;
-  right: 24px;
-  left: auto;
-  z-index: 100000;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
-  padding: 12px 16px;
-  gap: 10px;
-  pointer-events: auto;
+/* Подсветка текста при чтении по наведению */
+.screen-reader-highlight {
+  background: #f7e278;
+  border-radius: 6px;
+  transition: background 0.1s;
+  will-change: background;
+  width: fit-content;
 }

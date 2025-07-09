@@ -1,4 +1,5 @@
 import './screen-reader.css';
+import './screen-reader-controls.css';
 import { createControlsIfNeeded, createMainToggleIfNeeded, setControlsVisible, setMainToggleFixed } from './js/ui.js';
 import { initReader, setReaderEnabled } from './js/reader.js';
 import { CONFIG, STATE } from './config/constants.js';
