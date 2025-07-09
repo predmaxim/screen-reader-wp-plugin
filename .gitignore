@@ -1,1 +1,10 @@
 node_modules/
+build/
+.vscode/
+screen-reader-wp/
+screen-reader-wp.zip
+*.log
+*.tmp
+*.bak
+*.swp
+
