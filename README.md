@@ -36,6 +36,7 @@ npm run dev      # Launches webpack-dev-server on port 9000
 ```bash
 npm run build
 ```
+After running the script, a screen-reader-wp.zip archive will be created in root plugin directory, which you can install on your WordPress site.
 
 ### Testing
 

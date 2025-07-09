@@ -36,6 +36,7 @@ npm run dev      # Запускает webpack-dev-server на порту 9000
 ```bash
 npm run build
 ```
+После выполнения скрипта, в корне плагина появится архив screen-reader-wp, который можно установить на ваш wordpress сайт.
 
 ### Тестирование
 
