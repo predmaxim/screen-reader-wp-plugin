@@ -3,6 +3,8 @@ import { highlightElement, removeHighlight } from './highlight.js';
 import { updateToggleButtons, getControlElements, updatePlayPauseStopButtons } from './ui.js';
 import { STATE, CONFIG } from '../config/constants.js';
 
+let isPaused = false;
+
 export function setReaderEnabled(enabled) {
   STATE.READER_ENABLED = !!enabled;
   if (!STATE.READER_ENABLED) {
@@ -39,8 +41,41 @@ export function initReader() {
     }
   });
 
+  pauseBtn.addEventListener('click', function () {
+    if (!STATE.READER_ENABLED) return;
+    pauseReading();
+    isPaused = true;
+    playBtn.innerHTML = CONFIG.BUTTON_LABELS.RESUME;
+    playBtn.classList.add('screen-reader-btn-pause');
+    playBtn.removeAttribute('hidden');
+    pauseBtn.setAttribute('hidden', '');
+    stopBtn.removeAttribute('hidden');
+    playBtn.onclick = null;
+    playBtn.onclick = function () {
+      if (!STATE.READER_ENABLED) return;
+      if (isPaused && window.speechSynthesis && window.speechSynthesis.paused) {
+        resumeReading();
+        updatePlayPauseStopButtons(true);
+        playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
+        playBtn.classList.remove('screen-reader-btn-pause');
+        playBtn.onclick = null;
+        isPaused = false;
+      }
+    };
+    toggleOnBtn.setAttribute('hidden', '');
+  });
+
   playBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
+    if (isPaused && window.speechSynthesis && window.speechSynthesis.paused) {
+      resumeReading();
+      updatePlayPauseStopButtons(true);
+      playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
+      playBtn.classList.remove('screen-reader-btn-pause');
+      playBtn.onclick = null;
+      isPaused = false;
+      return;
+    }
     STATE.IS_READING_MODE = false;
     updateToggleButtons(STATE.IS_READING_MODE);
     stopReading();
@@ -60,32 +95,12 @@ export function initReader() {
     speakText(text, function () {
       updatePlayPauseStopButtons(false);
       playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
-      playBtn.classList.remove('screen-reader-btn-pause'); // сбросить жёлтый цвет
-      playBtn.onclick = null;
-      playBtn.removeAttribute('hidden');
-      toggleOnBtn.removeAttribute('hidden'); // показать toggleOnBtn только после завершения чтения
-    });
-    toggleOnBtn.setAttribute('hidden', ''); // скрыть toggleOnBtn, если включено чтение всей страницы
-  });
-
-  pauseBtn.addEventListener('click', function () {
-    if (!STATE.READER_ENABLED) return;
-    pauseReading();
-    playBtn.innerHTML = CONFIG.BUTTON_LABELS.RESUME;
-    playBtn.classList.add('screen-reader-btn-pause');
-    playBtn.removeAttribute('hidden');
-    pauseBtn.setAttribute('hidden', '');
-    stopBtn.removeAttribute('hidden');
-    playBtn.onclick = null;
-    playBtn.onclick = function () {
-      if (!STATE.READER_ENABLED) return;
-      resumeReading();
-      updatePlayPauseStopButtons(true);
-      playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
       playBtn.classList.remove('screen-reader-btn-pause');
       playBtn.onclick = null;
-    };
-    toggleOnBtn.setAttribute('hidden', ''); // скрыть toggleOnBtn, если пауза
+      playBtn.removeAttribute('hidden');
+      toggleOnBtn.removeAttribute('hidden');
+    });
+    toggleOnBtn.setAttribute('hidden', ''); // скрыть toggleOnBtn, если включено чтение всей страницы
   });
 
   stopBtn.addEventListener('click', function () {
@@ -97,6 +112,7 @@ export function initReader() {
     playBtn.onclick = null;
     playBtn.removeAttribute('hidden');
     toggleOnBtn.removeAttribute('hidden');
+    isPaused = false;
   });
 
   document.addEventListener('mouseover', function (e) {
