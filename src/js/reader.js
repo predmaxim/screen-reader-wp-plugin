@@ -1,14 +1,17 @@
 import { speakText, stopReading, pauseReading, resumeReading } from './tts.js';
 import { highlightElement, removeHighlight } from './highlight.js';
 import { updateToggleButtons, getControlElements, updatePlayPauseStopButtons } from './ui.js';
-import { EXCLUDED_SELECTORS_BASE, EXCLUDED_SELECTORS_WITH_BUTTONS, SELECTORS_TO_READ } from '../config/constants.js';
+import { EXCLUDED_SELECTORS_BASE, EXCLUDED_SELECTORS_WITH_BUTTONS, SELECTORS_TO_READ, STATE } from '../config/constants.js';
 
-let isReadingMode = false;
-let readerEnabled = false;
-let wasReadingMode = false;
 export function setReaderEnabled(enabled) {
-  readerEnabled = !!enabled;
-  // Не меняем isReadingMode здесь
+  STATE.READER_ENABLED = !!enabled;
+  if (!STATE.READER_ENABLED) {
+    STATE.IS_READING_MODE = false;
+    updateToggleButtons(false);
+    updatePlayPauseStopButtons(false);
+    stopReading();
+    removeHighlight();
+  }
 }
 
 export function initReader() {
@@ -18,58 +21,69 @@ export function initReader() {
   updatePlayPauseStopButtons(false);
 
   toggleOnBtn.addEventListener('click', function () {
-    if (!readerEnabled) return;
-    isReadingMode = true;
-    updateToggleButtons(isReadingMode);
+    if (!STATE.READER_ENABLED) return;
+    STATE.IS_READING_MODE = true;
+    updateToggleButtons(STATE.IS_READING_MODE);
   });
   toggleOffBtn.addEventListener('click', function () {
-    if (!readerEnabled) return;
-    isReadingMode = false;
-    updateToggleButtons(isReadingMode);
+    if (!STATE.READER_ENABLED) return;
+    STATE.IS_READING_MODE = false;
+    updateToggleButtons(STATE.IS_READING_MODE);
     stopReading();
     removeHighlight();
   });
 
   playBtn.addEventListener('click', function () {
-    if (!readerEnabled) return;
+    if (!STATE.READER_ENABLED) return;
     updatePlayPauseStopButtons(true);
-    // Если paused, но нет активного utterance, запускаем чтение заново
     if (window.speechSynthesis && window.speechSynthesis.paused) {
       if (window.speechSynthesis.speaking) {
         resumeReading();
         return;
       }
-      // если не speaking, значит было stop после pause — продолжаем как обычный play
     }
-    wasReadingMode = isReadingMode;
-    isReadingMode = false;
-    updateToggleButtons(isReadingMode);
+    STATE.WAS_READING_MODE = STATE.IS_READING_MODE;
+    STATE.IS_READING_MODE = false;
+    updateToggleButtons(STATE.IS_READING_MODE);
     removeHighlight();
     const mainContent = document.body.cloneNode(true);
     mainContent.querySelectorAll(EXCLUDED_SELECTORS_WITH_BUTTONS).forEach(el => el.remove());
     const text = mainContent.innerText.trim().replace(/\s+/g, ' ');
     speakText(text, function () {
-      if (wasReadingMode) {
-        isReadingMode = true;
-        updateToggleButtons(isReadingMode);
+      if (STATE.WAS_READING_MODE) {
+        STATE.IS_READING_MODE = true;
+        updateToggleButtons(STATE.IS_READING_MODE);
       }
       updatePlayPauseStopButtons(false);
     });
   });
 
   pauseBtn.addEventListener('click', function () {
-    if (!readerEnabled) return;
+    if (!STATE.READER_ENABLED) return;
     pauseReading();
+    playBtn.textContent = '▶ Resume Reading';
+    playBtn.style.display = '';
+    pauseBtn.style.display = 'none';
+    stopBtn.style.display = '';
+    playBtn.onclick = function () {
+      if (!STATE.READER_ENABLED) return;
+      resumeReading();
+      updatePlayPauseStopButtons(true);
+      playBtn.textContent = '▶ Read Entire Page';
+      playBtn.onclick = null;
+    };
   });
 
   stopBtn.addEventListener('click', function () {
-    if (!readerEnabled) return;
+    if (!STATE.READER_ENABLED) return;
     stopReading();
     updatePlayPauseStopButtons(false);
+    playBtn.textContent = '▶ Read Entire Page';
+    playBtn.onclick = null;
   });
 
   document.addEventListener('mouseover', function (e) {
-    if (!readerEnabled || !isReadingMode) return;
+    if (!STATE.READER_ENABLED || !STATE.IS_READING_MODE) return;
     const target = e.target.closest(SELECTORS_TO_READ);
     if (!target || target.matches(EXCLUDED_SELECTORS_BASE) || !target.innerText.trim()) return;
     highlightElement(target);

@@ -1,6 +1,7 @@
 import './screen-reader.css';
-import { createControlsIfNeeded, createMainToggleIfNeeded, setControlsVisible, setControlsFixed } from './js/ui.js';
+import { createControlsIfNeeded, createMainToggleIfNeeded, setControlsVisible, setControlsFixed, setMainToggleFixed } from './js/ui.js';
 import { initReader, setReaderEnabled } from './js/reader.js';
+import { STATE, INITIAL_READER_ENABLED } from './config/constants.js';
 
 if (window.speechSynthesis) {
   window.speechSynthesis.cancel();
@@ -9,21 +10,18 @@ if (window.speechSynthesis) {
 document.addEventListener('DOMContentLoaded', function () {
   createControlsIfNeeded();
   createMainToggleIfNeeded();
-  setControlsVisible(false); // по умолчанию скрыто
-  setControlsFixed(true);
+  setMainToggleFixed(STATE.ENABLED_FIXED);
+  setControlsVisible(false);
+  setReaderEnabled(INITIAL_READER_ENABLED);
 
-  setReaderEnabled(false); // явно выключаем режим чтения при старте
-
-  let enabled = false;
   const mainToggle = document.getElementById('screen-reader-main-toggle');
   mainToggle.setAttribute('aria-pressed', 'false');
   mainToggle.addEventListener('click', function () {
-    enabled = !enabled;
-    setControlsVisible(enabled);
-    setControlsFixed(enabled);
-    setReaderEnabled(enabled); // включаем/выключаем режим чтения
-    mainToggle.setAttribute('aria-pressed', enabled ? 'true' : 'false');
-    if (!enabled && window.speechSynthesis) {
+    STATE.MAIN_TOGGLE_ACTIVE = !STATE.MAIN_TOGGLE_ACTIVE;
+    setControlsVisible(STATE.MAIN_TOGGLE_ACTIVE);
+    setReaderEnabled(STATE.MAIN_TOGGLE_ACTIVE);
+    mainToggle.setAttribute('aria-pressed', STATE.MAIN_TOGGLE_ACTIVE ? 'true' : 'false');
+    if (!STATE.MAIN_TOGGLE_ACTIVE && window.speechSynthesis) {
       window.speechSynthesis.cancel();
     }
   });

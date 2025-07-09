@@ -1,3 +1,5 @@
+import { STATE } from '../config/constants.js';
+
 export function createControlsIfNeeded() {
   if (!document.getElementById('screen-reader-controls')) {
     const controlsDiv = document.createElement('div');
@@ -42,7 +44,23 @@ export function createMainToggleIfNeeded() {
     btn.className = 'screen-reader-main-toggle';
     btn.type = 'button';
     btn.innerHTML = '🦻';
+    if (!STATE.ENABLED_FIXED) {
+      btn.classList.add('screen-reader-main-toggle-static');
+    }
     document.body.appendChild(btn);
+  }
+}
+
+export function setMainToggleFixed(fixed) {
+  const btn = document.getElementById('screen-reader-main-toggle');
+  if (btn) {
+    if (fixed) {
+      btn.classList.remove('screen-reader-main-toggle-static');
+      btn.classList.add('screen-reader-main-toggle');
+    } else {
+      btn.classList.remove('screen-reader-main-toggle');
+      btn.classList.add('screen-reader-main-toggle-static');
+    }
   }
 }
 
@@ -50,15 +68,15 @@ export function setControlsVisible(visible) {
   const controlsDiv = document.getElementById('screen-reader-controls');
   if (controlsDiv) {
     controlsDiv.style.display = visible ? 'flex' : 'none';
+    if (STATE.ENABLED_FIXED) {
+      controlsDiv.classList.add('screen-reader-controls-absolute');
+    } else {
+      controlsDiv.classList.remove('screen-reader-controls-absolute');
+    }
   }
 }
 
-export function setControlsFixed(fixed) {
-  const controlsDiv = document.getElementById('screen-reader-controls');
-  if (controlsDiv) {
-    controlsDiv.classList.toggle('screen-reader-fixed', fixed);
-  }
-}
+export function setControlsFixed(fixed) { }
 
 export function updatePlayPauseStopButtons(isPlaying) {
   const playBtn = document.getElementById('screen-reader-play');
