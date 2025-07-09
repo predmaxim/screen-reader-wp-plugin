@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', function () {
     window.speechSynthesis.cancel();
   }
 
+  // Генерация панели управления, если её нет
+  if (!document.getElementById('screen-reader-controls')) {
+    const controlsDiv = document.createElement('div');
+    controlsDiv.id = 'screen-reader-controls';
+    controlsDiv.innerHTML = `
+      <button id="screen-reader-toggle-on" class="screen-reader-btn">🔊 Enable Hover Reading</button>
+      <button id="screen-reader-toggle-off" class="screen-reader-btn">🔇 Disable Hover Reading</button>
+      <button id="screen-reader-play" class="screen-reader-btn">▶ Read Entire Page</button>
+      <button id="screen-reader-pause" class="screen-reader-btn">⏸ Pause</button>
+      <button id="screen-reader-stop" class="screen-reader-btn">⏹ Stop</button>
+    `;
+    document.body.insertBefore(controlsDiv, document.body.firstChild);
+  }
+
   let isReadingMode = false;
   let utterance = null;
   let currentHighlight = null;

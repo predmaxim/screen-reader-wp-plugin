@@ -6,6 +6,8 @@ Version: 1.0
 Author: Maxim Predybaylo
 */
 
+<?php
+
 function screen_reader_assets() {
     wp_enqueue_style(
         'screen-reader-css',
@@ -20,17 +22,3 @@ function screen_reader_assets() {
     );
 }
 add_action('wp_enqueue_scripts', 'screen_reader_assets');
-
-function screen_reader_add_ui() {
-    echo '
-    <div class="screen-reader-ui">
-        <button id="screen-reader-toggle" class="screen-reader-btn">🔊 Включить чтение текста</button>
-        <div id="screen-reader-controls" style="display:none;">
-            <button id="screen-reader-play" class="screen-reader-btn">▶</button>
-            <button id="screen-reader-pause" class="screen-reader-btn">⏸</button>
-            <button id="screen-reader-stop" class="screen-reader-btn">⏹</button>
-        </div>
-    </div>
-    ';
-}
-add_action('wp_footer', 'screen_reader_add_ui');
