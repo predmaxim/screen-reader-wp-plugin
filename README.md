@@ -4,6 +4,8 @@
 
 This plugin adds screen reader functionality to your WordPress site.
 
+![Plugin demo](example.webp)
+
 ## Features
 
 - Read text on mouse hover ("Read on hover" mode)
@@ -29,7 +31,7 @@ npm install
 npm start      # Launches webpack-dev-server on port 9000
 ```
 
-### Production build
+### Production build (in progress)
 
 ```bash
 npm run build
@@ -58,4 +60,5 @@ npm run build
 
 After building, the `test_page/` folder will contain `screen-reader.bundle.js` with all JavaScript and CSS code included.
 
----
+## TODO:
+- Implement a build script to package the plugin into a zip file.
