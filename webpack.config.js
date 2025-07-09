@@ -1,6 +1,6 @@
 const path = require('path');
-console.log('NODE_ENV:', process.env.NODE_ENV);
-module.exports = {
+
+module.exports = (env, argv) => ({
   entry: './src/index.js',
   output: {
     filename: 'screen-reader.js',
@@ -15,13 +15,13 @@ module.exports = {
       },
     ],
   },
-  mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-  devtool: process.env.NODE_ENV === 'production' ? false : 'source-map',
+  mode: argv.mode || 'development',
+  devtool: argv.mode === 'production' ? false : 'source-map',
   devServer: {
     static: {
       directory: path.join(__dirname, 'test_page'),
     },
     port: 9000,
-    open: true,
+    open: false,
   },
-};
+});
