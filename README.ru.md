@@ -2,7 +2,7 @@
 
 [English version](README.md)
 
-Плагин для WordPress, который добавляет функциональность экранного диктора на сайт. Он использует встроенный в браузер api для воспроизведения текста (speechSynthesis), поддерживает браузеры Chrome, Firefox, Safari и Edge.
+Простой плагин для WordPress, который добавляет функциональность экранного диктора на сайт. Он использует встроенный в браузер api для воспроизведения текста (speechSynthesis), поддерживает браузеры Chrome, Firefox, Safari и Edge.
 
 ![Plugin demo](example.webp)
 

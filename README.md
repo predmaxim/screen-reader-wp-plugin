@@ -2,7 +2,7 @@
 
 [Русская версия](README.ru.md)
 
-A WordPress plugin that adds screen reader functionality to your website. It uses the browser’s built-in API for text-to-speech (speechSynthesis) and supports Chrome, Firefox, Safari, and Edge browsers.
+A simple WordPress plugin that adds screen reader functionality to your website. It uses the browser’s built-in API for text-to-speech (speechSynthesis) and supports Chrome, Firefox, Safari, and Edge browsers.
 
 ![Plugin demo](example.webp)
 
