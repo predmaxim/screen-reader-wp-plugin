@@ -1,7 +1,7 @@
 import { speakText, stopReading, pauseReading, resumeReading } from './tts.js';
 import { highlightElement, removeHighlight } from './highlight.js';
 import { updateToggleButtons, getControlElements, updatePlayPauseStopButtons } from './ui.js';
-import { EXCLUDED_SELECTORS_BASE, EXCLUDED_SELECTORS_WITH_BUTTONS, SELECTORS_TO_READ, STATE } from '../config/constants.js';
+import { STATE, CONFIG } from '../config/constants.js';
 
 export function setReaderEnabled(enabled) {
   STATE.READER_ENABLED = !!enabled;
@@ -24,6 +24,11 @@ export function initReader() {
     if (!STATE.READER_ENABLED) return;
     STATE.IS_READING_MODE = true;
     updateToggleButtons(STATE.IS_READING_MODE);
+    // При включении режима по наведению сбрасываем режим чтения всей страницы
+    stopReading();
+    updatePlayPauseStopButtons(false);
+    playBtn.textContent = '▶ Read Entire Page';
+    playBtn.onclick = null;
   });
   toggleOffBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
@@ -31,10 +36,18 @@ export function initReader() {
     updateToggleButtons(STATE.IS_READING_MODE);
     stopReading();
     removeHighlight();
+    updatePlayPauseStopButtons(false);
+    playBtn.textContent = '▶ Read Entire Page';
+    playBtn.onclick = null;
   });
 
   playBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
+    // При запуске чтения всей страницы сбрасываем режим по наведению
+    STATE.IS_READING_MODE = false;
+    updateToggleButtons(STATE.IS_READING_MODE);
+    stopReading();
+    if (window.speechSynthesis && window.speechSynthesis.speaking) return;
     updatePlayPauseStopButtons(true);
     if (window.speechSynthesis && window.speechSynthesis.paused) {
       if (window.speechSynthesis.speaking) {
@@ -42,19 +55,15 @@ export function initReader() {
         return;
       }
     }
-    STATE.WAS_READING_MODE = STATE.IS_READING_MODE;
-    STATE.IS_READING_MODE = false;
-    updateToggleButtons(STATE.IS_READING_MODE);
+    STATE.WAS_READING_MODE = false;
     removeHighlight();
     const mainContent = document.body.cloneNode(true);
-    mainContent.querySelectorAll(EXCLUDED_SELECTORS_WITH_BUTTONS).forEach(el => el.remove());
+    mainContent.querySelectorAll(CONFIG.EXCLUDED_SELECTORS_WITH_BUTTONS).forEach(el => el.remove());
     const text = mainContent.innerText.trim().replace(/\s+/g, ' ');
     speakText(text, function () {
-      if (STATE.WAS_READING_MODE) {
-        STATE.IS_READING_MODE = true;
-        updateToggleButtons(STATE.IS_READING_MODE);
-      }
       updatePlayPauseStopButtons(false);
+      playBtn.textContent = '▶ Read Entire Page';
+      playBtn.onclick = null;
     });
   });
 
@@ -65,6 +74,7 @@ export function initReader() {
     playBtn.style.display = '';
     pauseBtn.style.display = 'none';
     stopBtn.style.display = '';
+    playBtn.onclick = null;
     playBtn.onclick = function () {
       if (!STATE.READER_ENABLED) return;
       resumeReading();
@@ -84,10 +94,11 @@ export function initReader() {
 
   document.addEventListener('mouseover', function (e) {
     if (!STATE.READER_ENABLED || !STATE.IS_READING_MODE) return;
-    const target = e.target.closest(SELECTORS_TO_READ);
-    if (!target || target.matches(EXCLUDED_SELECTORS_BASE) || !target.innerText.trim()) return;
+    const target = e.target.closest(CONFIG.SELECTORS_TO_READ);
+    if (!target || target.matches(CONFIG.EXCLUDED_SELECTORS_BASE) || !target.innerText.trim()) return;
     highlightElement(target);
     stopReading();
+    if (window.speechSynthesis && window.speechSynthesis.speaking) return;
     speakText(target.innerText.trim());
   });
 

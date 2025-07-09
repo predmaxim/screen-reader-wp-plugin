@@ -1,7 +1,7 @@
 import './screen-reader.css';
-import { createControlsIfNeeded, createMainToggleIfNeeded, setControlsVisible, setControlsFixed, setMainToggleFixed } from './js/ui.js';
+import { createControlsIfNeeded, createMainToggleIfNeeded, setControlsVisible, setMainToggleFixed } from './js/ui.js';
 import { initReader, setReaderEnabled } from './js/reader.js';
-import { STATE, INITIAL_READER_ENABLED } from './config/constants.js';
+import { CONFIG, STATE } from './config/constants.js';
 
 if (window.speechSynthesis) {
   window.speechSynthesis.cancel();
@@ -10,9 +10,9 @@ if (window.speechSynthesis) {
 document.addEventListener('DOMContentLoaded', function () {
   createControlsIfNeeded();
   createMainToggleIfNeeded();
-  setMainToggleFixed(STATE.ENABLED_FIXED);
-  setControlsVisible(false);
-  setReaderEnabled(INITIAL_READER_ENABLED);
+  setMainToggleFixed(CONFIG.ENABLED_FIXED);
+  setControlsVisible(STATE.CONTROLS_VISIBLE);
+  setReaderEnabled(STATE.READER_ENABLED);
 
   const mainToggle = document.getElementById('screen-reader-main-toggle');
   mainToggle.setAttribute('aria-pressed', 'false');

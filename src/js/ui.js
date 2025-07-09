@@ -1,4 +1,4 @@
-import { STATE } from '../config/constants.js';
+import { CONFIG } from '../config/constants.js';
 
 export function createControlsIfNeeded() {
   if (!document.getElementById('screen-reader-controls')) {
@@ -44,7 +44,7 @@ export function createMainToggleIfNeeded() {
     btn.className = 'screen-reader-main-toggle';
     btn.type = 'button';
     btn.innerHTML = '🦻';
-    if (!STATE.ENABLED_FIXED) {
+    if (!CONFIG.ENABLED_FIXED) {
       btn.classList.add('screen-reader-main-toggle-static');
     }
     document.body.appendChild(btn);
@@ -68,15 +68,13 @@ export function setControlsVisible(visible) {
   const controlsDiv = document.getElementById('screen-reader-controls');
   if (controlsDiv) {
     controlsDiv.style.display = visible ? 'flex' : 'none';
-    if (STATE.ENABLED_FIXED) {
+    if (CONFIG.ENABLED_FIXED) {
       controlsDiv.classList.add('screen-reader-controls-absolute');
     } else {
       controlsDiv.classList.remove('screen-reader-controls-absolute');
     }
   }
 }
-
-export function setControlsFixed(fixed) { }
 
 export function updatePlayPauseStopButtons(isPlaying) {
   const playBtn = document.getElementById('screen-reader-play');

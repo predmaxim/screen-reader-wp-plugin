@@ -5,6 +5,7 @@ export function speakText(text, onEndCallback) {
     alert('Ваш браузер не поддерживает синтез речи!');
     return;
   }
+  window.speechSynthesis.cancel();
   utterance = new SpeechSynthesisUtterance(text);
   utterance.lang = 'ru-RU';
   if (typeof onEndCallback === 'function') {
