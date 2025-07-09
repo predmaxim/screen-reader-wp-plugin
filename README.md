@@ -2,7 +2,7 @@
 
 [Русская версия](README.ru.md)
 
-This plugin adds screen reader functionality to your WordPress site.
+A WordPress plugin that adds screen reader functionality to your website. It uses the browser’s built-in API for text-to-speech (speechSynthesis) and supports Chrome, Firefox, Safari, and Edge browsers.
 
 ![Plugin demo](example.webp)
 
@@ -28,7 +28,7 @@ npm install
 ### Start dev server
 
 ```bash
-npm start      # Launches webpack-dev-server on port 9000
+npm run dev      # Launches webpack-dev-server on port 9000
 ```
 
 ### Production build (in progress)
