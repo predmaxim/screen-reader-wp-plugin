@@ -1,4 +1,4 @@
-import { speakText, stopReading, pauseReading, resumeReading } from './tts.js';
+import { speakText, stopReading, pauseReading, resumeReading, isSpeechSupported } from './tts.js';
 import { highlightElement, removeHighlight } from './highlight.js';
 import { updateToggleButtons, getControlElements, updatePlayPauseStopButtons } from './ui.js';
 import { STATE, CONFIG } from '../config/constants.js';
@@ -23,6 +23,10 @@ export function initReader() {
   updatePlayPauseStopButtons(false);
 
   toggleOnBtn.addEventListener('click', function () {
+    if (!isSpeechSupported()) {
+      alert(CONFIG.BUTTON_LABELS.WARNING_NOT_SUPPORTED);
+      return;
+    }
     STATE.IS_READING_MODE = !STATE.IS_READING_MODE;
     updateToggleButtons(STATE.IS_READING_MODE);
     if (STATE.IS_READING_MODE) {
@@ -43,6 +47,10 @@ export function initReader() {
 
   pauseBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
+    if (!isSpeechSupported()) {
+      alert(CONFIG.BUTTON_LABELS.WARNING_NOT_SUPPORTED);
+      return;
+    }
     pauseReading();
     isPaused = true;
     playBtn.innerHTML = CONFIG.BUTTON_LABELS.RESUME;
@@ -53,6 +61,10 @@ export function initReader() {
     playBtn.onclick = null;
     playBtn.onclick = function () {
       if (!STATE.READER_ENABLED) return;
+      if (!isSpeechSupported()) {
+        alert(CONFIG.BUTTON_LABELS.WARNING_NOT_SUPPORTED);
+        return;
+      }
       if (isPaused && window.speechSynthesis && window.speechSynthesis.paused) {
         resumeReading();
         updatePlayPauseStopButtons(true);
@@ -67,6 +79,10 @@ export function initReader() {
 
   playBtn.addEventListener('click', function () {
     if (!STATE.READER_ENABLED) return;
+    if (!isSpeechSupported()) {
+      alert(CONFIG.BUTTON_LABELS.WARNING_NOT_SUPPORTED);
+      return;
+    }
     if (isPaused && window.speechSynthesis && window.speechSynthesis.paused) {
       resumeReading();
       updatePlayPauseStopButtons(true);

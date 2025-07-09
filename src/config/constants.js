@@ -27,6 +27,7 @@ export const BUTTON_LABELS_EN = {
   RESUME: ICONS.RESUME + ' Resume Reading',
   STOP: ICONS.STOP + ' Stop',
   MAIN: ICONS.MAIN,
+  WARNING_NOT_SUPPORTED: 'Your browser does not support speech synthesis!',
 };
 
 export const BUTTON_LABELS_RU = {
@@ -37,6 +38,7 @@ export const BUTTON_LABELS_RU = {
   RESUME: ICONS.RESUME + ' Продолжить',
   STOP: ICONS.STOP + ' Стоп',
   MAIN: ICONS.MAIN,
+  WARNING_NOT_SUPPORTED: 'Ваш браузер не поддерживает синтез речи!',
 };
 
 export const CONFIG = {

@@ -1,13 +1,19 @@
+import { CONFIG } from "../config/constants";
+
 let utterance = null;
 
+export function isSpeechSupported() {
+  return !!(window.speechSynthesis && window.speechSynthesis.getVoices().length);
+}
+
 export function speakText(text, onEndCallback) {
-  if (!window.speechSynthesis) {
-    alert('Ваш браузер не поддерживает синтез речи!');
+  if (!isSpeechSupported()) {
+    alert(CONFIG.BUTTON_LABELS.WARNING_NOT_SUPPORTED);
     return;
   }
   window.speechSynthesis.cancel();
   utterance = new SpeechSynthesisUtterance(text);
-  utterance.lang = 'ru-RU';
+  utterance.lang = CONFIG.LANG === 'en' ? 'en-US' : 'ru-RU';
   if (typeof onEndCallback === 'function') {
     utterance.onend = onEndCallback;
   } else {
