@@ -28,10 +28,10 @@ export function getControlElements() {
 export function updateToggleButtons(isReadingMode) {
   const { toggleOnBtn } = getControlElements();
   if (isReadingMode) {
-    toggleOnBtn.textContent = CONFIG.BUTTON_LABELS.TOGGLE_ON_ACTIVE || '🟢 Hover Reading';
+    toggleOnBtn.innerHTML = CONFIG.BUTTON_LABELS.TOGGLE_ON_ACTIVE || 'Hover Reading ON';
     toggleOnBtn.classList.add('screen-reader-btn-active');
   } else {
-    toggleOnBtn.textContent = CONFIG.BUTTON_LABELS.TOGGLE_ON;
+    toggleOnBtn.innerHTML = CONFIG.BUTTON_LABELS.TOGGLE_ON;
     toggleOnBtn.classList.remove('screen-reader-btn-active');
   }
 }

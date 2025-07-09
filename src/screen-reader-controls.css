@@ -97,3 +97,13 @@
 #screen-reader-pause.screen-reader-btn:focus {
   background: #f57c00;
 }
+
+.screen-reader-btn-pause {
+  background: #f9a825 !important;
+  color: #fff !important;
+}
+
+.screen-reader-btn-pause:hover,
+.screen-reader-btn-pause:focus {
+  background: #f57c00 !important;
+}
