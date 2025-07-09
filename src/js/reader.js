@@ -1,10 +1,11 @@
 import { speakText, stopReading, pauseReading, resumeReading } from './tts.js';
 import { highlightElement, removeHighlight } from './highlight.js';
-import { updateToggleButtons, getControlElements } from './ui.js';
+import { updateToggleButtons, getControlElements, updatePlayPauseStopButtons } from './ui.js';
 import { EXCLUDED_SELECTORS_BASE, EXCLUDED_SELECTORS_WITH_BUTTONS, SELECTORS_TO_READ } from '../config/constants.js';
 
 let isReadingMode = false;
 let readerEnabled = false;
+let wasReadingMode = false;
 export function setReaderEnabled(enabled) {
   readerEnabled = !!enabled;
   // Не меняем isReadingMode здесь
@@ -14,6 +15,7 @@ export function initReader() {
   const { toggleOnBtn, toggleOffBtn, controlsDiv, playBtn, pauseBtn, stopBtn } = getControlElements();
   controlsDiv.style.display = 'none';
   updateToggleButtons(false);
+  updatePlayPauseStopButtons(false);
 
   toggleOnBtn.addEventListener('click', function () {
     if (!readerEnabled) return;
@@ -30,9 +32,14 @@ export function initReader() {
 
   playBtn.addEventListener('click', function () {
     if (!readerEnabled) return;
+    updatePlayPauseStopButtons(true);
+    // Если paused, но нет активного utterance, запускаем чтение заново
     if (window.speechSynthesis && window.speechSynthesis.paused) {
-      resumeReading();
-      return;
+      if (window.speechSynthesis.speaking) {
+        resumeReading();
+        return;
+      }
+      // если не speaking, значит было stop после pause — продолжаем как обычный play
     }
     wasReadingMode = isReadingMode;
     isReadingMode = false;
@@ -46,6 +53,7 @@ export function initReader() {
         isReadingMode = true;
         updateToggleButtons(isReadingMode);
       }
+      updatePlayPauseStopButtons(false);
     });
   });
 
@@ -57,6 +65,7 @@ export function initReader() {
   stopBtn.addEventListener('click', function () {
     if (!readerEnabled) return;
     stopReading();
+    updatePlayPauseStopButtons(false);
   });
 
   document.addEventListener('mouseover', function (e) {

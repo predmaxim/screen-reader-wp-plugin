@@ -59,3 +59,18 @@ export function setControlsFixed(fixed) {
     controlsDiv.classList.toggle('screen-reader-fixed', fixed);
   }
 }
+
+export function updatePlayPauseStopButtons(isPlaying) {
+  const playBtn = document.getElementById('screen-reader-play');
+  const pauseBtn = document.getElementById('screen-reader-pause');
+  const stopBtn = document.getElementById('screen-reader-stop');
+  if (isPlaying) {
+    playBtn.style.display = 'none';
+    pauseBtn.style.display = '';
+    stopBtn.style.display = '';
+  } else {
+    playBtn.style.display = '';
+    pauseBtn.style.display = 'none';
+    stopBtn.style.display = 'none';
+  }
+}
