@@ -25,6 +25,7 @@ export const CONFIG = {
   SELECTORS_TO_READ: 'p, h1, h2, h3, h4, h5, h6, div, span, li, a, button',
   EXCLUDED_SELECTORS_BASE: 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"]',
   EXCLUDED_SELECTORS_WITH_BUTTONS: 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"], #screen-reader-controls, #screen-reader-toggle-on, #screen-reader-play, #screen-reader-pause, #screen-reader-stop',
+  HOVER_READ_DELAY: 500,
   BUTTON_LABELS: {
     TOGGLE_ON: ICONS.TOGGLE_ON + ' Hover Reading',
     TOGGLE_ON_ACTIVE: ICONS.TOGGLE_ON_ACTIVE + ' Hover Reading ON',

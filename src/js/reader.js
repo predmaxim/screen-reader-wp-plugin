@@ -115,21 +115,27 @@ export function initReader() {
     isPaused = false;
   });
 
+  let hoverTimeout = null;
   document.addEventListener('mouseover', function (e) {
     if (!STATE.READER_ENABLED || !STATE.IS_READING_MODE) return;
     const target = e.target.closest(CONFIG.SELECTORS_TO_READ);
     if (!target || target.matches(CONFIG.EXCLUDED_SELECTORS_BASE) || !target.innerText.trim()) return;
     highlightElement(target);
-    // Добавляем красивую подсветку
     target.classList.add('screen-reader-highlight');
     stopReading();
     if (window.speechSynthesis && window.speechSynthesis.speaking) return;
-    speakText(target.innerText.trim());
+    if (hoverTimeout) clearTimeout(hoverTimeout);
+    hoverTimeout = setTimeout(() => {
+      speakText(target.innerText.trim());
+    }, CONFIG.HOVER_READ_DELAY);
   });
 
   document.addEventListener('mouseout', function (e) {
     removeHighlight();
-    // Убираем подсветку
     if (e.target) e.target.classList.remove('screen-reader-highlight');
+    if (hoverTimeout) {
+      clearTimeout(hoverTimeout);
+      hoverTimeout = null;
+    }
   });
 }
