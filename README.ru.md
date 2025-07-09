@@ -56,9 +56,5 @@ npm run build
 - `test_page/index.html` — Тестовая страница
 - `webpack.config.js` — Конфигурация сборки
 
-## Структура после сборки
-
-После сборки в папке `test_page/` появится файл `screen-reader.bundle.js`, который включает весь JavaScript и CSS код.
-
 ## TODO:
 - Реализовать build script, для упаковки плагина в zip. 

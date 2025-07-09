@@ -56,9 +56,5 @@ npm run build
 - `test_page/index.html` — Test page
 - `webpack.config.js` — Build configuration
 
-## Build output structure
-
-After building, the `test_page/` folder will contain `screen-reader.bundle.js` with all JavaScript and CSS code included.
-
 ## TODO:
 - Implement a build script to package the plugin into a zip file.
