@@ -1,4 +1,3 @@
-/* Material UI стиль для панели управления и кнопок */
 .screen-reader-controls {
   display: flex;
   flex-wrap: wrap;
@@ -41,7 +40,6 @@
   border: none;
   border-radius: 8px;
   background: #1976d2;
-  /* MUI primary main */
   color: #fff;
   cursor: pointer;
   box-shadow: 0 2px 8px rgba(33, 150, 243, 0.10);
@@ -77,7 +75,6 @@
   box-shadow: 0 2px 8px rgba(67, 160, 71, 0.18) !important;
 }
 
-/* Кнопка стоп — красная */
 #screen-reader-stop.screen-reader-btn {
   background: #d32f2f;
 }
@@ -85,17 +82,6 @@
 #screen-reader-stop.screen-reader-btn:hover,
 #screen-reader-stop.screen-reader-btn:focus {
   background: #b71c1c;
-}
-
-/* Кнопка пауза — оранжевая */
-#screen-reader-pause.screen-reader-btn {
-  background: #f9a825;
-  color: #fff;
-}
-
-#screen-reader-pause.screen-reader-btn:hover,
-#screen-reader-pause.screen-reader-btn:focus {
-  background: #f57c00;
 }
 
 .screen-reader-btn-pause {
@@ -106,4 +92,14 @@
 .screen-reader-btn-pause:hover,
 .screen-reader-btn-pause:focus {
   background: #f57c00 !important;
+}
+
+#screen-reader-pause.screen-reader-btn {
+  background: #f9a825;
+  color: #fff;
+}
+
+#screen-reader-pause.screen-reader-btn:hover,
+#screen-reader-pause.screen-reader-btn:focus {
+  background: #f57c00;
 }

@@ -28,7 +28,7 @@ export function getControlElements() {
 export function updateToggleButtons(isReadingMode) {
   const { toggleOnBtn } = getControlElements();
   if (isReadingMode) {
-    toggleOnBtn.innerHTML = CONFIG.BUTTON_LABELS.TOGGLE_ON_ACTIVE || 'Hover Reading ON';
+    toggleOnBtn.innerHTML = CONFIG.BUTTON_LABELS.TOGGLE_ON_ACTIVE;
     toggleOnBtn.classList.add('screen-reader-btn-active');
   } else {
     toggleOnBtn.innerHTML = CONFIG.BUTTON_LABELS.TOGGLE_ON;
@@ -42,10 +42,15 @@ export function createMainToggleIfNeeded() {
     btn.id = 'screen-reader-main-toggle';
     btn.className = 'screen-reader-main-toggle';
     btn.type = 'button';
-    btn.innerHTML = '🦻';
+    btn.innerHTML = CONFIG.BUTTON_LABELS.MAIN;
     if (!CONFIG.ENABLED_FIXED) {
       btn.classList.add('screen-reader-main-toggle-static');
     }
+    btn.addEventListener('click', () => {
+      if (typeof window.setReaderEnabled === 'function') {
+        window.setReaderEnabled(!STATE.READER_ENABLED);
+      }
+    });
     document.body.appendChild(btn);
   }
 }
@@ -55,9 +60,7 @@ export function setMainToggleFixed(fixed) {
   if (btn) {
     if (fixed) {
       btn.classList.remove('screen-reader-main-toggle-static');
-      btn.classList.add('screen-reader-main-toggle');
     } else {
-      btn.classList.remove('screen-reader-main-toggle');
       btn.classList.add('screen-reader-main-toggle-static');
     }
   }
@@ -73,7 +76,6 @@ export function setControlsVisible(visible) {
     } else {
       controlsDiv.classList.add('screen-reader-controls-static');
     }
-    // Если нужен абсолютный режим, добавьте сюда условие
   }
 }
 

@@ -30,14 +30,14 @@ export function initReader() {
       updatePlayPauseStopButtons(false);
       playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
       playBtn.onclick = null;
-      playBtn.setAttribute('hidden', ''); // скрыть playBtn, если включён режим чтения по наведению
+      playBtn.setAttribute('hidden', '');
     } else {
       stopReading();
       removeHighlight();
       updatePlayPauseStopButtons(false);
       playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
       playBtn.onclick = null;
-      playBtn.removeAttribute('hidden'); // показать playBtn, если режим выключен
+      playBtn.removeAttribute('hidden');
     }
   });
 
@@ -100,7 +100,7 @@ export function initReader() {
       playBtn.removeAttribute('hidden');
       toggleOnBtn.removeAttribute('hidden');
     });
-    toggleOnBtn.setAttribute('hidden', ''); // скрыть toggleOnBtn, если включено чтение всей страницы
+    toggleOnBtn.setAttribute('hidden', '');
   });
 
   stopBtn.addEventListener('click', function () {
@@ -108,7 +108,7 @@ export function initReader() {
     stopReading();
     updatePlayPauseStopButtons(false);
     playBtn.innerHTML = CONFIG.BUTTON_LABELS.PLAY;
-    playBtn.classList.remove('screen-reader-btn-pause'); // сбросить жёлтый цвет
+    playBtn.classList.remove('screen-reader-btn-pause');
     playBtn.onclick = null;
     playBtn.removeAttribute('hidden');
     toggleOnBtn.removeAttribute('hidden');
@@ -116,17 +116,21 @@ export function initReader() {
   });
 
   let hoverTimeout = null;
+  let lastHovered = null;
   document.addEventListener('mouseover', function (e) {
     if (!STATE.READER_ENABLED || !STATE.IS_READING_MODE) return;
     const target = e.target.closest(CONFIG.SELECTORS_TO_READ);
     if (!target || target.matches(CONFIG.EXCLUDED_SELECTORS_BASE) || !target.innerText.trim()) return;
+    if (lastHovered === target) return;
+    lastHovered = target;
     highlightElement(target);
     target.classList.add('screen-reader-highlight');
-    stopReading();
-    if (window.speechSynthesis && window.speechSynthesis.speaking) return;
     if (hoverTimeout) clearTimeout(hoverTimeout);
+    stopReading();
     hoverTimeout = setTimeout(() => {
-      speakText(target.innerText.trim());
+      if (lastHovered === target) {
+        speakText(target.innerText.trim());
+      }
     }, CONFIG.HOVER_READ_DELAY);
   });
 
@@ -137,5 +141,6 @@ export function initReader() {
       clearTimeout(hoverTimeout);
       hoverTimeout = null;
     }
+    lastHovered = null;
   });
 }
