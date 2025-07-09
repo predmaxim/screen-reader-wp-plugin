@@ -1,12 +1,13 @@
 <?php
 /*
 Plugin Name: Screen Reader
-Description: A plugin for reading text with control buttons and hover mode.
+Description: Adds a floating control panel for text-to-speech and hover reading. Uses browser speechSynthesis API. Supports Chrome, Firefox, Safari, Edge.
 Version: 1.0
 Author: Maxim Predybaylo
+Tags: accessibility, screen reader, tts, a11y, voice
+License: GPLv2 or later
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 */
-
-<?php
 
 function screen_reader_assets() {
     wp_enqueue_style(
