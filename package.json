@@ -3,13 +3,16 @@
   "version": "1.0.0",
   "main": "screen-reader.js",
   "scripts": {
-    "dev": "webpack serve --mode development"
+    "dev": "webpack serve --mode development",
+    "build:prepare": "mkdir screen-reader-wp && cp -r src/* screen-reader-wp/",
+    "build": "npm run build:prepare && bestzip screen-reader-wp.zip screen-reader-wp/* && rm -rf screen-reader-wp"
   },
   "keywords": [],
   "author": "Maxim Predybaylo",
-  "license": "ISC",
+  "license": "GPLv2",
   "description": "",
   "devDependencies": {
+    "bestzip": "^2.2.1",
     "css-loader": "^6.8.1",
     "style-loader": "^3.3.3",
     "webpack": "^5.99.9",
