@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "webpack serve --mode development",
     "dev:clean": "npm run dev && rm -rf build",
-    "build:prepare": "webpack --mode production && mkdir -p screen-reader-wp && cp build/* src/screen-reader.php src/readme.txt screen-reader-wp/",
+    "build:prepare": "webpack --mode production && mkdir screen-reader-wp && cp build/* src/screen-reader.php src/readme.txt screen-reader-wp/",
     "build": "npm run build:prepare && bestzip screen-reader-wp.zip screen-reader-wp/* && rm -rf screen-reader-wp build"
   },
   "keywords": [],
