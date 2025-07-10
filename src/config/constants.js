@@ -42,11 +42,11 @@ export const BUTTON_LABELS_RU = {
 };
 
 export const CONFIG = {
-  ENABLED_FIXED: false,
+  ENABLED_FIXED: true,
   LANG: 'ru',
-  SELECTORS_TO_READ: 'p, h1, h2, h3, h4, h5, h6, div, span, li, a, button',
+  SELECTORS_TO_READ: 'p, h1, h2, h3, h4, h5, h6, div, span, li, a, button, article',
   EXCLUDED_SELECTORS_BASE: 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"]',
-  EXCLUDED_SELECTORS_WITH_BUTTONS: 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"], #screen-reader-controls, #screen-reader-toggle-on, #screen-reader-play, #screen-reader-pause, #screen-reader-stop',
+  EXCLUDED_SELECTORS_WITH_BUTTONS: 'nav, menu, footer, script, style, .menu, .navbar, [aria-hidden="true"], #screen-reader-controls, #screen-reader-toggle-on, #screen-reader-play, #screen-reader-pause, #screen-reader-stop, #page-header, #page-footer, .screen-reader-main-toggle, .us_custom_3778a016, .pojo-skip-link, .pojo-skip-content',
   HOVER_READ_DELAY: 400,
   get BUTTON_LABELS() {
     return this.LANG === 'ru' ? BUTTON_LABELS_RU : BUTTON_LABELS_EN;
