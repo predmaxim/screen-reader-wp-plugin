@@ -56,6 +56,3 @@ After running the script, a screen-reader-wp.zip archive will be created in root
 - `src/screen-reader.php` — WordPress PHP integration
 - `test_page/index.html` — Test page
 - `webpack.config.js` — Build configuration
-
-## TODO:
-- Implement a build script to package the plugin into a zip file.

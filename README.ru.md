@@ -56,6 +56,3 @@ npm run build
 - `src/screen-reader.php` — PHP файл для WordPress
 - `test_page/index.html` — Тестовая страница
 - `webpack.config.js` — Конфигурация сборки
-
-## TODO:
-- Реализовать build script, для упаковки плагина в zip. 
