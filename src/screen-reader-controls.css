@@ -18,13 +18,15 @@
   display: flex;
   flex-wrap: wrap;
   gap: 16px;
-  bottom: 32px;
   left: 50%;
   transform: translateX(-50%);
   padding: 1rem;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12), 0 1.5px 6px rgba(0, 0, 0, 0.08);
   border-radius: 5%;
   background: white;
+  width: max-content;
+  bottom: 10%;
+  max-width: 80%;
 }
 
 .screen-reader-controls-static {
